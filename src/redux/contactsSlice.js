@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { fetchContacts, addContact, deleteContact } from "./operations";
+const controller = new AbortController();
 
 const handlePending = state => {
   state.isLoading = true;
@@ -27,15 +28,19 @@ const contactsSlice = createSlice ({
       .addCase(fetchContacts.rejected, handleRejected)
       .addCase(addContact.pending, handlePending )
       .addCase(addContact.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.error = null;
+        
         for (const item of state.items){
           if (item.name === action.payload.name ){
-              alert (`${action.payload.name} is already in contacts`); 
-              return;
-          }
+              alert (`${action.payload.name} is already in contacts`);
+              controller.abort();
+              state.isLoading = false;
+              state.error = null; 
+              return 
+          } 
         }
-        state.items.push(action.payload);
+        state.isLoading = false;
+        state.error = null;
+        state.items.push(action.payload); 
       })
       .addCase(addContact.rejected, handleRejected)
       .addCase(deleteContact.pending, handlePending)
