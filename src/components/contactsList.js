@@ -7,18 +7,11 @@ import { selectFiltredContacts } from "redux/selectors";
 export const ContactsList = ()=> {
     const dispatch = useDispatch();
 
-    //const filter = useSelector(selectFilter);
-
-    //const contacts = useSelector(selectContacts);
     const filtredContacts = useSelector(selectFiltredContacts);
-    // const filtredContacts = 
-    // contacts
-    //       .filter(item => (item.name).toUpperCase().includes((filter).toUpperCase()));
-    //       console.log(filtredContacts);
-
+   
     const handleDelete = (id) => {
         console.log (id)
-       dispatch(deleteContact(id))
+        dispatch(deleteContact(id))
     };
 
     return (

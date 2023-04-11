@@ -1,12 +1,15 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addContact } from "redux/operations";
+import { selectContacts } from "redux/selectors";
 import { Button, FormContainer, FormLabel, Input } from "./contactsForm.styled"
 
 export const ContactsForm = () => {
     const [name, setName] = useState('');
     const [number, setNumber] = useState(0);
     const dispatch = useDispatch();
+    const contacts = useSelector(selectContacts);
+    console.log(contacts);
 
   const handleChangeName = event => {
     setName(event.currentTarget.value);
@@ -18,6 +21,12 @@ export const ContactsForm = () => {
 
   const handleSubmit = event => {
     event.preventDefault();
+    for (const item of contacts){
+      if (item.name === name ){
+          alert (`${name} is already in contacts`);
+          return; 
+      } 
+    }
     dispatch(addContact({name, number}));
     setName('');
     setNumber(0);
